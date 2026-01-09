@@ -15,3 +15,6 @@ spring:
       hibernate:
     show-sql: false
     open-in-view: false
+logging:
+  level:
+    br.com.wanderlei: DEBUG
