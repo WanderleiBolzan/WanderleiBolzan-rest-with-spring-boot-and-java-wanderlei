@@ -1,9 +1,10 @@
 package br.com.wanderlei.controlers;
 
-import br.com.wanderlei.PersonServices;
+import br.com.wanderlei.services.PersonServices;
 import br.com.wanderlei.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,25 +16,22 @@ public class PersonController {
     @Autowired
     private PersonServices services;
 
-    @RequestMapping(value = "/{id}",
-            method = RequestMethod.GET,
+    @GetMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Person findById(@PathVariable("id") String id) {
+    public Person findById(@PathVariable("id") Long id) {
 
         return services.findById (id);
 
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Person> findAll() {
 
         return services.findAll();
 
     }
-    @RequestMapping(method = RequestMethod.POST,
+    @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -42,7 +40,7 @@ public class PersonController {
         return services.create(person);
 
     }
-    @RequestMapping(method = RequestMethod.PUT,
+    @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -52,12 +50,12 @@ public class PersonController {
 
     }
 
-    @RequestMapping(value = "/{id}",
-            method = RequestMethod.DELETE
+    @DeleteMapping(value = "/{id}"
     )
-    public void delete(@PathVariable("id") String id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
         services.delete(id);
+        return ResponseEntity.noContent ().build ();
 
     }
 
