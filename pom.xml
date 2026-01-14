@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.wanderlei</groupId>
-	<artifactId>rest-with-spring-cloud-and-java-wanderlei</artifactId>
+	<artifactId>rest-with_spring_and-java-wanderlei</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>rest-with-spring-and-java-wanderlei</name>
+	<name>rest-with_spring_and-java-wanderlei</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
