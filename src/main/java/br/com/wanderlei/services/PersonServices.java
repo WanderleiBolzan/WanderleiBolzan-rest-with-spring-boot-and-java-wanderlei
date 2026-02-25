@@ -29,7 +29,7 @@ public class PersonServices {
 
 
     public Person findById(Long id) {
-        logger.info("Finding one Person");
+        logger.info("Finding one PersonDTO");
 
         return repository.findById (id)
                 .orElseThrow (() -> new ResourceNotFoundException("No Records found for this ID "));
@@ -37,13 +37,13 @@ public class PersonServices {
     }
 
     public Person create(Person person) {
-        logger.info("Creating one Person");
+        logger.info("Creating one PersonDTO");
 
         return repository.save (person);
     }
 
     public Person update(Person person) {
-        logger.info("updating one Person");
+        logger.info("updating one PersonDTO");
         Person entity =  repository.findById (person.getId ( ))
                 .orElseThrow (() -> new ResourceNotFoundException("No Records found for this ID "));
 
@@ -57,7 +57,7 @@ public class PersonServices {
     }
 
     public void delete(Long id) {
-        logger.info("deleting one Person");
+        logger.info("deleting one PersonDTO");
 
         Person entity =  repository.findById (id)
                 .orElseThrow (() -> new ResourceNotFoundException("No Records found for this ID "));
