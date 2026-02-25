@@ -3,7 +3,7 @@ package br.com.wanderlei.unitTests.mapper.mocks;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.wanderlei.data.dto.PersonDTO;
+import br.com.wanderlei.data.dto.v1.PersonDTO;
 import br.com.wanderlei.model.Person;
 
 public class MockPerson {

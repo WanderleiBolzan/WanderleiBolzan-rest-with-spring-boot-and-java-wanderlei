@@ -1,4 +1,4 @@
-package br.com.wanderlei.data.dto;
+package br.com.wanderlei.data.dto.v1;
 
 import java.io.Serializable;
 import java.util.Objects;

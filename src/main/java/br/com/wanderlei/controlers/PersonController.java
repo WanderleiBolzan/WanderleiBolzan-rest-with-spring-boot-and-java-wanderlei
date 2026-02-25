@@ -1,6 +1,8 @@
 package br.com.wanderlei.controlers;
 
-import br.com.wanderlei.data.dto.PersonDTO;
+import br.com.wanderlei.data.dto.v1.PersonDTO;
+import br.com.wanderlei.data.dto.v2.PersonDTOV2;
+
 import br.com.wanderlei.services.PersonServices;
 import br.com.wanderlei.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +34,6 @@ public class PersonController {
         return services.findAll();
 
     }
-    @PostMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public PersonDTO create(@RequestBody PersonDTO person) {
-
-        return services.create(person);
-
-    }
     @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -50,13 +43,34 @@ public class PersonController {
         return services.update (person);
 
     }
-
     @DeleteMapping(value = "/{id}"
     )
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
         services.delete(id);
         return ResponseEntity.noContent ().build ();
+
+    }
+
+    @PostMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+
+    public PersonDTO create(@RequestBody PersonDTO person) {
+
+        return services.create(person);
+
+    }
+
+    @PostMapping(value = "/v2",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+
+    public PersonDTOV2 create(@RequestBody PersonDTOV2 person) {
+
+        return services.createV2(person);
 
     }
 
