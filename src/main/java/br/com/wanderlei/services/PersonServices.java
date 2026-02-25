@@ -1,6 +1,9 @@
 package br.com.wanderlei.services;
 
+import br.com.wanderlei.data.dto.PersonDTO;
 import br.com.wanderlei.exception.ResourceNotFoundException;
+import static br.com.wanderlei.mapper.ObjectMapper.parseListObject;
+import static br.com.wanderlei.mapper.ObjectMapper.parseObject;
 import br.com.wanderlei.model.Person;
 import br.com.wanderlei.repository.PersonRepository;
 import org.slf4j.Logger;
@@ -20,29 +23,31 @@ public class PersonServices {
     @Autowired
     PersonRepository repository;
 
-    public List<Person> findAll() {
+    public List<PersonDTO> findAll() {
 
         logger.info("Finding all People");
-        return repository.findAll ();
+        return parseListObject (repository.findAll (), PersonDTO.class);
 
     }
 
 
-    public Person findById(Long id) {
+    public PersonDTO findById(Long id) {
         logger.info("Finding one PersonDTO");
 
-        return repository.findById (id)
+        var entity =  repository.findById (id)
                 .orElseThrow (() -> new ResourceNotFoundException("No Records found for this ID "));
-
+        return parseObject(entity, PersonDTO.class);
     }
 
-    public Person create(Person person) {
+    public PersonDTO create(PersonDTO person) {
         logger.info("Creating one PersonDTO");
 
-        return repository.save (person);
+        var entity = parseObject(person, Person.class);
+
+        return parseObject(repository.save(entity), PersonDTO.class);
     }
 
-    public Person update(Person person) {
+    public PersonDTO update(Person person) {
         logger.info("updating one PersonDTO");
         Person entity =  repository.findById (person.getId ( ))
                 .orElseThrow (() -> new ResourceNotFoundException("No Records found for this ID "));
@@ -52,8 +57,7 @@ public class PersonServices {
         entity.setAddress (person.getAddress ());
         entity.setGender (person.getGender ());
 
-
-        return repository.save (entity);
+        return parseObject(repository.save(entity), PersonDTO.class);
     }
 
     public void delete(Long id) {
