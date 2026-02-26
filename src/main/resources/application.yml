@@ -1,20 +1,43 @@
 server:
-  port: 8081
+  # Porta onde a aplicação será executada
+  port: 8082
+
 spring:
   application:
-    name:rest-with-spring-boot-and-java-wanderlei
+    name: rest-with-spring-boot-and-java-wanderlei
+
   datasource:
+    # Driver do MySQL
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/rest-with_spring__and-java-wanderlei?useTimezone=true&serverTimezone=UTC
+    # URL de conexão: inclui parâmetro para criar a base de dados automaticamente se não existir
+    url: jdbc:mysql://localhost:3306/rest_with_spring_boot_wanderlei?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC&useSSL=false
     username: wjb
-    password: Nazlob4991@
+    password: "Nazlob4991@"
+
   jpa:
+    # Definido como 'none' porque o Flyway cuidará da estrutura das tabelas
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
+    show-sql: true
     properties:
       hibernate:
-    show-sql: false
-    open-in-view: false
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+  flyway:
+    # Ativa o Flyway para migrações de base de dados
+    enabled: true
+    # Repara o histórico de migrações se houver erros de checksum
+    repair-on-migrate: true
+    # Define o ponto de partida caso a base de dados já contenha dados
+    baseline-on-migrate: true
+    # Localização padrão dos scripts SQL (src/main/resources/db/migration)
+    locations: classpath:db/migration
+
 logging:
   level:
-    br.com.wanderlei: INFO
+    root: INFO
+    # Nível de log para o seu pacote específico
+    br.com.wanderlei: DEBUG
+    # Exibe as queries SQL no console para debug
+    org.hibernate.SQL: DEBUG
