@@ -1,9 +1,12 @@
 package br.com.wanderlei.data.dto.v2;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+@JsonPropertyOrder({"id", "firstName", "lastName","burthDate","address","gender"})
 public class PersonDTOV2 implements Serializable {
 
     private static final long serialVersion = 1L;
