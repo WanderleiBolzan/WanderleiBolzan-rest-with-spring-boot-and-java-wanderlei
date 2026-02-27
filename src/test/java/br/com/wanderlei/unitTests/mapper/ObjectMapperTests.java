@@ -3,7 +3,7 @@ import static br.com.wanderlei.mapper.ObjectMapper.parseListObject;
 import static br.com.wanderlei.mapper.ObjectMapper.parseObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import br.com.wanderlei.data.dto.v1.PersonDTO;
+import br.com.wanderlei.data.dto.PersonDTO;
 import br.com.wanderlei.model.Person;
 import br.com.wanderlei.unitTests.mapper.mocks.MockPerson;
 import org.junit.jupiter.api.BeforeEach;

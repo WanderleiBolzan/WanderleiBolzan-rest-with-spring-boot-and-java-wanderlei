@@ -1,6 +1,7 @@
 package br.com.wanderlei.exception.handler;
 
 import br.com.wanderlei.exception.ExceptionResponse;
+import br.com.wanderlei.exception.RequiredObjectIsNullException;
 import br.com.wanderlei.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,4 +33,14 @@ public class CustonEntityResponseHandler extends ResponseEntityExceptionHandler 
                 request.getDescription (false));
         return new ResponseEntity<> (response, HttpStatus.NOT_FOUND );
     }
+
+    @ExceptionHandler( RequiredObjectIsNullException.class)
+    public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(Exception ex, WebRequest request) {
+        ExceptionResponse response = new ExceptionResponse (
+                new Date (  ),
+                ex.getMessage (),
+                request.getDescription (false));
+        return new ResponseEntity<> (response, HttpStatus.BAD_REQUEST );
+    }
+
 }

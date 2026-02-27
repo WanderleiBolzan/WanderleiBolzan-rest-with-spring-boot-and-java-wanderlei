@@ -1,10 +1,8 @@
 package br.com.wanderlei.controlers;
 
-import br.com.wanderlei.data.dto.v1.PersonDTO;
-import br.com.wanderlei.data.dto.v2.PersonDTOV2;
+import br.com.wanderlei.data.dto.PersonDTO;
 
 import br.com.wanderlei.services.PersonServices;
-import br.com.wanderlei.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +36,7 @@ public class PersonController {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }
     )
-    public PersonDTO update(@RequestBody Person person) {
+    public PersonDTO update(@RequestBody PersonDTO person) {
 
         return services.update (person);
 
@@ -62,18 +60,6 @@ public class PersonController {
         return services.create(person);
 
     }
-
-    @PostMapping(value = "/v2",
-            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
-            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }
-    )
-
-    public PersonDTOV2 create(@RequestBody PersonDTOV2 person) {
-
-        return services.createV2(person);
-
-    }
-
 
 }
 

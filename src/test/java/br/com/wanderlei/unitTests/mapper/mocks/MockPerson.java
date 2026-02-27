@@ -3,7 +3,7 @@ package br.com.wanderlei.unitTests.mapper.mocks;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.wanderlei.data.dto.v1.PersonDTO;
+import br.com.wanderlei.data.dto.PersonDTO;
 import br.com.wanderlei.model.Person;
 
 public class MockPerson {
@@ -47,9 +47,9 @@ public class MockPerson {
         PersonDTO person = new PersonDTO();
         person.setAddress("Address Test" + number);
         person.setFirstName("First Name Test" + number);
-        person.setGender(((number % 2)==0) ? "Male" : "Female");
         person.setId(number.longValue());
         person.setLastName("Last Name Test" + number);
+        person.setGender(((number % 2)==0) ? "Male" : "Female");
         return person;
     }
 
