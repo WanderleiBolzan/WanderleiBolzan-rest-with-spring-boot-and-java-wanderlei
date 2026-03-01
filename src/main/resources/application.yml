@@ -1,5 +1,5 @@
 server:
-  # Porta onde a aplicação será executada
+  # Define a porta do servidor
   port: 8082
 
 spring:
@@ -7,15 +7,15 @@ spring:
     name: rest-with-spring-boot-and-java-wanderlei
 
   datasource:
-    # Driver do MySQL
+    # Configurações de ligação ao MySQL
     driver-class-name: com.mysql.cj.jdbc.Driver
-    # URL de conexão: inclui parâmetro para criar a base de dados automaticamente se não existir
-    url: jdbc:mysql://localhost:3306/rest_with_spring_boot_wanderlei?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC&useSSL=false
+    # Adicionada a flag allowPublicKeyRetrieval para compatibilidade com versões recentes do MySQL
+    url: jdbc:mysql://localhost:3306/rest_with_spring_boot_wanderlei?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
     username: wjb
     password: "Nazlob4991@"
 
   jpa:
-    # Definido como 'none' porque o Flyway cuidará da estrutura das tabelas
+    # Como o Flyway está ativo, o Hibernate não deve alterar as tabelas automaticamente
     hibernate:
       ddl-auto: none
     show-sql: true
@@ -25,19 +25,20 @@ spring:
         format_sql: true
 
   flyway:
-    # Ativa o Flyway para migrações de base de dados
+    # Configurações para garantir que as migrações corram sem erros de baseline
     enabled: true
-    # Repara o histórico de migrações se houver erros de checksum
     repair-on-migrate: true
-    # Define o ponto de partida caso a base de dados já contenha dados
     baseline-on-migrate: true
-    # Localização padrão dos scripts SQL (src/main/resources/db/migration)
     locations: classpath:db/migration
 
 logging:
   level:
     root: INFO
-    # Nível de log para o seu pacote específico
+    # Logs detalhados para depuração do projeto e das queries SQL
     br.com.wanderlei: DEBUG
-    # Exibe as queries SQL no console para debug
     org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+spring-doc:
+  path-to-match: /api/**/v1/**
+  swagger-ui:
+    use-root-path: true
