@@ -1,7 +1,8 @@
 server:
   # Define a porta do servidor
   port: 8082
-
+cors:
+  originPatterns: http://localhost:8082, http://localhost:3000, https://github.com/WanderleiBolzan
 spring:
   application:
     name: rest-with-spring-boot-and-java-wanderlei

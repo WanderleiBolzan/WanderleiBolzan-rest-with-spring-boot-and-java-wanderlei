@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+//@CrossOrigin(origins="http://localhost:8082")
 @RestController
 @RequestMapping("/api/person/v1")
 @Tag(name="People", description = "Endpoint for management People")
