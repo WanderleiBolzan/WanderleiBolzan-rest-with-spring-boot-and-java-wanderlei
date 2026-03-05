@@ -5,7 +5,6 @@ import br.com.wanderlei.data.dto.PersonDTO;
 import br.com.wanderlei.services.PersonServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,26 +25,40 @@ public class PersonController implements PersonControllerDocs {
 
     @Override
     @GetMapping(value = "/{id}",
-            produces = {MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE}
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
     )
     public PersonDTO findById(@PathVariable(value = "id") Long id) {
         return services.findById(id);
     }
 
+    // CORREÇÃO 1: O findAll não deve ter o {firstName} no mapeamento.
+    // O findAll costuma ser o GET na raiz "/" do RequestMapping.
     @Override
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE})
-
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<PagedModel<EntityModel<PersonDTO>>> findAll(
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="size", defaultValue="12") Integer size,
             @RequestParam(value="direction", defaultValue="asc") String direction
     ){
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "firstName"));
+        return ResponseEntity.ok(services.findAll(pageable));
+    }
 
-        var sortDirection = "desc".equalsIgnoreCase (direction) ? Direction.DESC: Direction.ASC;
-        Pageable pagepeople = PageRequest.of(page,size, Sort.by (sortDirection, "firstName"));
-        return ResponseEntity.ok(services.findAll(pagepeople));
+    // CORREÇÃO 2: Mantemos o findByName com a rota específica.
+    @Override
+    @GetMapping(value = "/findPeopleByName/{firstName}", produces = {
+            MediaType.APPLICATION_JSON_VALUE,
+            MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<PagedModel<EntityModel<PersonDTO>>> findByName(
+            @PathVariable("firstName") String firstName,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction
+    ) {
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "firstName"));
+        return ResponseEntity.ok(services.findByName(firstName, pageable));
     }
 
     @Override
@@ -66,7 +79,6 @@ public class PersonController implements PersonControllerDocs {
         return services.update(person);
     }
 
-    // CORREÇÃO AQUI: Adicionado o value = "/{id}" para que o @PathVariable funcione
     @Override
     @PatchMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

@@ -11,7 +11,6 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
@@ -56,6 +55,27 @@ public class PersonServices {
                                 String.valueOf (pageable.getSort())))
                                         .withSelfRel();
         return assembler.toModel (peopleWithLinks, findAllLink);
+    }
+    public PagedModel<EntityModel<PersonDTO>> findByName(String firstName, Pageable pageable) {
+
+        logger.info("Finding People by name!");
+
+        var people = repository.findPeopleByName(firstName, pageable);
+
+        var peopleWithLinks = people.map(person -> {
+            var dto = parseObject(person, PersonDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder.methodOn(PersonController.class)
+                                .findAll(
+                                        pageable.getPageNumber(),
+                                        pageable.getPageSize(),
+                                        String.valueOf(pageable.getSort())))
+                .withSelfRel();
+        return assembler.toModel(peopleWithLinks, findAllLink);
     }
 
 
@@ -114,8 +134,6 @@ public class PersonServices {
         var dto =  parseObject(entity, PersonDTO.class);
         addHateoasLinks(dto);
         return dto;
-
-
     }
 
     public void delete(Long id) {
