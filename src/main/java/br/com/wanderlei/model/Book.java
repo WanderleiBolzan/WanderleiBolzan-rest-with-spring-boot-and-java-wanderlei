@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table (name = "book")
+@Table (name = "books")
 public class Book  implements Serializable {
 
   private static final long serialVersion = 1L;
@@ -19,7 +19,7 @@ public class Book  implements Serializable {
   private String author;
   @Column(name = "launch_date" , nullable = false)
   @Temporal (TemporalType.DATE)
-  private Date launch_date;
+  private Date launchDate;
   @Column(name = "price" , nullable = false)
   private Double price;
   @Column(name = "title" , nullable = false, length = 100)
@@ -60,23 +60,23 @@ public class Book  implements Serializable {
         this.title = title;
     }
 
-    public Date getLaunch_date() {
-        return launch_date;
+    public Date getLaunchDate() {
+        return launchDate;
     }
 
-    public void setLaunch_date(Date launch_date) {
-        this.launch_date = launch_date;
+    public void setLaunchDate(Date launchDate) {
+        this.launchDate = launchDate;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Book book)) return false;
-        return Objects.equals (getId ( ), book.getId ( )) && Objects.equals (getAuthor ( ), book.getAuthor ( )) && Objects.equals (getLaunch_date ( ), book.getLaunch_date ( )) && Objects.equals (getPrice ( ), book.getPrice ( )) && Objects.equals (getTitle ( ), book.getTitle ( ));
+        return Objects.equals (getId ( ), book.getId ( )) && Objects.equals (getAuthor ( ), book.getAuthor ( )) && Objects.equals (getLaunchDate ( ), book.getLaunchDate ( )) && Objects.equals (getPrice ( ), book.getPrice ( )) && Objects.equals (getTitle ( ), book.getTitle ( ));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash (getId ( ), getAuthor ( ), getLaunch_date ( ), getPrice ( ), getTitle ( ));
+        return Objects.hash (getId ( ), getAuthor ( ), getLaunchDate ( ), getPrice ( ), getTitle ( ));
     }
 }

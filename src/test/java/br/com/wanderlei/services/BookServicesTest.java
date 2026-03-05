@@ -90,7 +90,7 @@ class BookServicesTest {
         );
 
         assertEquals("Author Test1", result.getAuthor ());
-        assertNotNull (result.getLaunch_date ());
+        assertNotNull (result.getLaunchDate());
         assertEquals(result.getPrice (), result.getPrice ());
         assertEquals("Título Test1", result.getTitle ());
     }
@@ -143,7 +143,7 @@ class BookServicesTest {
         );
 
         assertEquals("Author Test1", result.getAuthor ());
-        assertNotNull (result.getLaunch_date ());
+        assertNotNull (result.getLaunchDate ());
         assertEquals(result.getPrice (), result.getPrice ());
         assertEquals("Título Test1", result.getTitle ());
 
@@ -197,7 +197,7 @@ class BookServicesTest {
         );
 
         assertEquals("Author Test1", result.getAuthor ());
-        assertNotNull (result.getLaunch_date ());
+        assertNotNull (result.getLaunchDate ());
         assertEquals(result.getPrice (), result.getPrice ());
         assertEquals("Título Test1", result.getTitle ());
 
@@ -278,7 +278,7 @@ class BookServicesTest {
         );
 
         assertEquals("Author Test1", result.getAuthor ());
-        assertNotNull (result.getLaunch_date ());
+        assertNotNull (result.getLaunchDate ());
         assertEquals(result.getPrice (), result.getPrice ());
         assertEquals("Título Test1", result.getTitle ());
 

@@ -12,7 +12,7 @@ public class BookMapper {
 
         dto.setId (book.getId());
         dto.setAuthor (book.getAuthor());
-        dto.setLaunch_date (book.getLaunch_date ());
+        dto.setLaunchDate (book.getLaunchDate ());
         dto.setPrice (book.getPrice());
         dto.setTitle (book.getTitle());
 
@@ -26,7 +26,7 @@ public class BookMapper {
 
         dto.setId(book.getId());
         dto.setAuthor(book.getAuthor());
-        dto.setLaunch_date (book.getLaunch_date ());
+        dto.setLaunchDate (book.getLaunchDate ());
         dto.setPrice(book.getPrice());
         dto.setTitle(book.getTitle());
 

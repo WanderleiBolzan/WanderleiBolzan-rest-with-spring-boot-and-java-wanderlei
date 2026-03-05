@@ -18,7 +18,7 @@ spring:
   jpa:
     # Como o Flyway está ativo, o Hibernate não deve alterar as tabelas automaticamente
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

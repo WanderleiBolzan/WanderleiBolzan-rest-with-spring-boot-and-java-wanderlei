@@ -35,7 +35,7 @@ public class MockBook {
     public Book mockEntity(Integer number) {
         Book book = new Book();
         book.setAuthor ("Author Test" + number);
-        book.setLaunch_date (new Date ());
+        book.setLaunchDate (new Date ());
         book.setPrice((double) (number + 100));
         book.setTitle ("Título Test" + number);
         return book;
@@ -44,7 +44,7 @@ public class MockBook {
     public BookDTO mockDTO(Integer number) {
         BookDTO book = new BookDTO();
         book.setAuthor ("Author Test" + number);
-        book.setLaunch_date (new Date());
+        book.setLaunchDate (new Date());
         book.setId(number.longValue());
         book.setPrice((double) (number = 100));
         book.setTitle ("Título Teste" + number);
