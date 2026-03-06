@@ -54,7 +54,8 @@ public class PersonServices {
                                 pageable.getPageSize(),
                                 String.valueOf (pageable.getSort())))
                                         .withSelfRel();
-        return assembler.toModel (peopleWithLinks, findAllLink);
+        return assembler.toModel (peopleWithLinks,
+                findAllLink);
     }
     public PagedModel<EntityModel<PersonDTO>> findByName(String firstName, Pageable pageable) {
 

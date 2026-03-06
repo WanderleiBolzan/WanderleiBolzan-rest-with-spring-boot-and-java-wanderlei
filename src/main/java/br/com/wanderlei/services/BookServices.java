@@ -64,6 +64,54 @@ public class BookServices {
                 findAllLink);
     }
 
+    public PagedModel<EntityModel<BookDTO>>findByAuthor(String author, Pageable pageable) {
+
+        logger.info("Finding Book by Author!");
+
+        var buscaAuthor = repository.findBookByauthor (author, pageable);
+
+        var peopleWithLinks = buscaAuthor.map(book -> {
+            var dto = parseObject(book, BookDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+
+        Link findAllLink = WebMvcLinkBuilder
+                .linkTo(WebMvcLinkBuilder
+                        .methodOn(BookController.class)
+                        .findAll(pageable.getPageNumber (),
+                                pageable.getPageSize(),
+                                String.valueOf (pageable.getSort())))
+                .withSelfRel();
+        return assembler.toModel (peopleWithLinks,
+                findAllLink);
+    }
+
+    public PagedModel<EntityModel<BookDTO>>findByTitle(String title, Pageable pageable) {
+
+        logger.info("Finding Book by Title!");
+
+        var buscaTitle = repository.findBookByTitle (title, pageable);
+
+        var bookWithLinks = buscaTitle.map(book -> {
+            var dto = parseObject(book, BookDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+
+
+        Link selfLink = WebMvcLinkBuilder
+                .linkTo(WebMvcLinkBuilder
+                        .methodOn(BookController.class)
+                        .findByTitle(
+                                title, // O primeiro parâmetro deve ser o título (String)
+                                pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                "asc" // Ou extrair a direção do pageable
+                        ))
+                .withSelfRel();
+        return  assembler.toModel(bookWithLinks, selfLink);
+    }
 
     public BookDTO findById(Long id) {
         logger.info("Finding one BookDTO");

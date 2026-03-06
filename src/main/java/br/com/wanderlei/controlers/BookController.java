@@ -2,7 +2,6 @@ package br.com.wanderlei.controlers;
 
 import br.com.wanderlei.controlers.docs.BookControllerDocs;
 import br.com.wanderlei.data.dto.BookDTO;
-import br.com.wanderlei.data.dto.PersonDTO;
 import br.com.wanderlei.services.BookServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/book/v1")
@@ -49,6 +46,36 @@ public class BookController implements BookControllerDocs {
         Pageable pagebook = PageRequest.of (page, size, Sort.by (sortDirection, "author"));
         return ResponseEntity.ok (services.findAll(pagebook));
     }
+
+    @GetMapping(value = "/findBookByAuthor/{author}", produces = {
+            MediaType.APPLICATION_JSON_VALUE,
+            MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<PagedModel<EntityModel<BookDTO>>> findByAuthor(
+            @PathVariable("author") String author,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction
+    ) {
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "author"));
+        return ResponseEntity.ok(services.findByAuthor(author, pageable));
+    }
+
+    @GetMapping(value = "/findBookByTitle/{title}", produces = {
+            MediaType.APPLICATION_JSON_VALUE,
+            MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<PagedModel<EntityModel<BookDTO>>> findByTitle(
+            @PathVariable("title") String title,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction
+    ) {
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "title"));
+        return ResponseEntity.ok(services.findByTitle(title, pageable));
+    }
+
+
     @Override
     @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
