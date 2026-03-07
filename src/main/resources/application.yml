@@ -1,9 +1,11 @@
 server:
-  # Define a porta do servidor
   port: 8082
+
 cors:
   originPatterns: http://localhost:8082, http://localhost:3000, https://github.com/WanderleiBolzan
+
 file:
+  # Certifique-se que esta pasta existe e o Java tem permissão de escrita
   upload-dir: /Wanderlei/rest-with-spring-and-java-wanderlei/uploads
 
 spring:
@@ -11,15 +13,12 @@ spring:
     name: rest-with-spring-boot-and-java-wanderlei
 
   datasource:
-    # Configurações de ligação ao MySQL
     driver-class-name: com.mysql.cj.jdbc.Driver
-    # Adicionada a flag allowPublicKeyRetrieval para compatibilidade com versões recentes do MySQL
     url: jdbc:mysql://localhost:3306/rest_with_spring_boot_wanderlei?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
     username: wjb
     password: "Nazlob4991@"
 
   jpa:
-    # Como o Flyway está ativo, o Hibernate não deve alterar as tabelas automaticamente
     hibernate:
       ddl-auto: update
     show-sql: true
@@ -27,27 +26,31 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
-servlet:
-  multipart:
-    enabled: true
-    file-size-threshold: 2KB
-    max-file-size: 200MB
-    max-request-size: 215MB
+
+  # CORREÇÃO: O bloco 'servlet' deve estar DENTRO de 'spring'
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+
   flyway:
-    # Configurações para garantir que as migrações corram sem erros de baseline
     enabled: true
     repair-on-migrate: true
     baseline-on-migrate: true
     locations: classpath:db/migration
 
+# Configurações do SpringDoc (Swagger)
+springdoc:
+  packages-to-scan: br.com.wanderlei
+  paths-to-match: /api/**/v1/**
+  swagger-ui:
+    use-root-path: true
+
 logging:
   level:
     root: INFO
-    # Logs detalhados para depuração do projeto e das queries SQL
     br.com.wanderlei: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-spring-doc:
-  path-to-match: /api/**/v1/**
-  swagger-ui:
-    use-root-path: true
