@@ -15,7 +15,6 @@ import java.util.List;
 
 @Component
 public class XlsxImporter implements FileImporter {
-
     @Override
     public List<PersonDTO> importFile(InputStream inputStream) throws Exception {
 
@@ -36,7 +35,7 @@ public class XlsxImporter implements FileImporter {
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
             if (isRowValid(row)) {
-                people.add(parseRowToPersonDto(row));
+               people.add(parseRowToPersonDto(row));
             }
         }
         return people;

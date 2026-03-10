@@ -11,9 +11,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/person/v1")
@@ -27,29 +31,25 @@ public class PersonController implements PersonControllerDocs {
     @GetMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
     )
-    public PersonDTO findById(@PathVariable(value = "id") Long id) {
-        return services.findById(id);
+    public ResponseEntity<PersonDTO> findById(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.ok(services.findById(id));
     }
 
-    // CORREÇÃO 1: O findAll não deve ter o {firstName} no mapeamento.
-    // O findAll costuma ser o GET na raiz "/" do RequestMapping.
     @Override
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<PagedModel<EntityModel<PersonDTO>>> findAll(
-            @RequestParam(value="page", defaultValue="0") Integer page,
-            @RequestParam(value="size", defaultValue="12") Integer size,
-            @RequestParam(value="direction", defaultValue="asc") String direction
-    ){
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction
+    ) {
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "firstName"));
         return ResponseEntity.ok(services.findAll(pageable));
     }
 
-    // CORREÇÃO 2: Mantemos o findByName com a rota específica.
     @Override
-    @GetMapping(value = "/findPeopleByName/{firstName}", produces = {
-            MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(value = "/findPeopleByName/{firstName}",
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<PagedModel<EntityModel<PersonDTO>>> findByName(
             @PathVariable("firstName") String firstName,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -66,24 +66,42 @@ public class PersonController implements PersonControllerDocs {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
     )
-    public PersonDTO create(@RequestBody PersonDTO person) {
-        return services.create(person);
+    public ResponseEntity<PersonDTO> create(@RequestBody PersonDTO person) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(services.create(person));
     }
 
+    /**
+     * CORREÇÃO PARA O ERRO DE MEDIA TYPE:
+     * O massCreation deve consumir MULTIPART_FORM_DATA.
+     * Verifique se no Postman você está usando 'form-data' no body.
+     */
+    @Override
+    @PostMapping(value = "/massCreation",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE, // Habilita o recebimento de arquivos
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+    )
+    public ResponseEntity<List<PersonDTO>> massCreation(@RequestParam("file") MultipartFile file) {
+        // É uma boa prática validar se o arquivo não está vazio antes de processar
+        if (file == null || file.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(services.massCreation(file));
+    }
     @Override
     @PutMapping(
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
     )
-    public PersonDTO update(@RequestBody PersonDTO person) {
-        return services.update(person);
+    public ResponseEntity<PersonDTO> update(@RequestBody PersonDTO person) {
+        return ResponseEntity.ok(services.update(person));
     }
 
     @Override
     @PatchMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public PersonDTO disablePerson(@PathVariable(value = "id") Long id) {
-        return services.disablePerson(id);
+    public ResponseEntity<PersonDTO> disablePerson(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.ok(services.disablePerson(id));
     }
 
     @Override
