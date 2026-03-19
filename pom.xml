@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.4.0</version>
-		<relativePath/> </parent>
+	</parent>
 	<groupId>br.com.wanderlei</groupId>
 	<artifactId>rest-with_spring_and-java-wanderlei</artifactId>
 	<version>0.0.1-SNAPSHOT</version>

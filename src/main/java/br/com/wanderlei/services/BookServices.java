@@ -1,9 +1,7 @@
 package br.com.wanderlei.services;
 
-import br.com.wanderlei.controlers.BookController;
-import br.com.wanderlei.controlers.PersonController;
+import br.com.wanderlei.controllers.BookController;
 import br.com.wanderlei.data.dto.BookDTO;
-import br.com.wanderlei.data.dto.PersonDTO;
 import br.com.wanderlei.exception.RequiredObjectIsNullException;
 import br.com.wanderlei.exception.ResourceNotFoundException;
 import br.com.wanderlei.mapper.custom.BookMapper;
@@ -20,9 +18,6 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-import static br.com.wanderlei.mapper.ObjectMapper.parseListObject;
 import static br.com.wanderlei.mapper.ObjectMapper.parseObject;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;

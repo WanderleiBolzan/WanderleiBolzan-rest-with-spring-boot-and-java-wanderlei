@@ -1,6 +1,6 @@
-package br.com.wanderlei.controlers;
+package br.com.wanderlei.controllers;
 
-import br.com.wanderlei.controlers.docs.BookControllerDocs;
+import br.com.wanderlei.controllers.docs.BookControllerDocs;
 import br.com.wanderlei.data.dto.BookDTO;
 import br.com.wanderlei.services.BookServices;
 import io.swagger.v3.oas.annotations.tags.Tag;

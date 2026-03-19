@@ -1,4 +1,4 @@
-package br.com.wanderlei.controlers;
+package br.com.wanderlei.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

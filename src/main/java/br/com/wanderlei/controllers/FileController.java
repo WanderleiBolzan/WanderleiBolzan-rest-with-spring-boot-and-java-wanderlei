@@ -1,9 +1,11 @@
-package br.com.wanderlei.controlers;
+package br.com.wanderlei.controllers;
 
-import br.com.wanderlei.controlers.docs.FileControllerDocs;
+import br.com.wanderlei.controllers.docs.FileControllerDocs;
 import br.com.wanderlei.data.dto.UploadFileResponseDTO;
 import br.com.wanderlei.services.FileStorageService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -21,15 +23,18 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/file/v1")
 public class FileController implements FileControllerDocs {
 
+    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
+
     @Autowired
-    private FileStorageService fileStorageService;
+    private FileStorageService service;
 
-    @Override
     @PostMapping("/uploadFile")
+    @Override
     public UploadFileResponseDTO uploadFile(@RequestParam("file") MultipartFile file) {
-        var fileName = fileStorageService.storeFile(file);
+        var fileName = service.storeFile(file);
 
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+        // http://localhost:8080/api/file/v1/downloadFile/filename.docx
+        var fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/file/v1/downloadFile/")
                 .path(fileName)
                 .toUriString();
@@ -37,35 +42,35 @@ public class FileController implements FileControllerDocs {
         return new UploadFileResponseDTO(fileName, fileDownloadUri, file.getContentType(), file.getSize());
     }
 
-    @Override
     @PostMapping("/uploadMultipleFiles")
+    @Override
     public List<UploadFileResponseDTO> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-        // A lógica de negócio permanece exatamente a mesma
         return Arrays.asList(files)
                 .stream()
                 .map(file -> uploadFile(file))
                 .collect(Collectors.toList());
     }
 
-    @Override
     @GetMapping("/downloadFile/{fileName:.+}")
+    @Override
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
-        Resource resource = fileStorageService.loadFileAsResource(fileName);
-        String contentType = "";
-
+        Resource resource = service.loadFileAsResource(fileName);
+        String contentType = null;
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (Exception e) {
-            contentType = "application/octet-stream";
+            logger.error("Could not determine file type!");
         }
 
-        if (contentType == null || contentType.isBlank()) {
+        if (contentType == null) {
             contentType = "application/octet-stream";
         }
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
 }

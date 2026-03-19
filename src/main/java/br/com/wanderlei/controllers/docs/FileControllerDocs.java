@@ -1,4 +1,4 @@
-package br.com.wanderlei.controlers.docs;
+package br.com.wanderlei.controllers.docs;
 
 import br.com.wanderlei.data.dto.UploadFileResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;

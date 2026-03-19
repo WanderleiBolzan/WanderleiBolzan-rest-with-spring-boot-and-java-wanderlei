@@ -21,7 +21,7 @@ import java.util.Objects;
 @Service
 public class FileStorageService {
 
-    private static final Logger logger = LoggerFactory.getLogger(FileStorageService.class);
+    public static final Logger logger = LoggerFactory.getLogger(FileStorageService.class);
     private final Path fileStorageLocation;
 
     @Autowired
