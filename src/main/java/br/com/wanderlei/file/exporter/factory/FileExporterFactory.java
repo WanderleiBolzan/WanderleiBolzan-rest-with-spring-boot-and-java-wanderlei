@@ -4,6 +4,7 @@ import br.com.wanderlei.exception.BadRequestException;
 import br.com.wanderlei.file.exporter.MediaTypes;
 import br.com.wanderlei.file.exporter.contract.FileExporter;
 import br.com.wanderlei.file.exporter.impl.CsvExporter;
+import br.com.wanderlei.file.exporter.impl.PdfExporter;
 import br.com.wanderlei.file.exporter.impl.XlsxExporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -30,6 +31,9 @@ public class FileExporterFactory {
             return context.getBean(XlsxExporter.class);
         } else if (acceptHeader.equalsIgnoreCase(MediaTypes.APPLICATION_CSV_VALUE)) {
             return context.getBean(CsvExporter.class);
+        } else if (acceptHeader.equalsIgnoreCase(MediaTypes.APPLICATION_PDF_VALUE)) {
+            return context.getBean(PdfExporter.class);
+
         } else {
             throw new BadRequestException("Invalid File Format: " + acceptHeader);
         }
