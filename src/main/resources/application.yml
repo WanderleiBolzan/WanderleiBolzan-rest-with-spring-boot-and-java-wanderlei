@@ -1,42 +1,55 @@
 server:
   port: 8082
+
 cors:
-  originPatterns: http://localhost:8082, http://localhost:3000, https://github.com/WanderleiBolzan
+  # Mantido como String única para compatibilidade com @Value("${cors.originPatterns}")
+  originPatterns: "http://localhost:8082,http://localhost:3000,https://github.com/WanderleiBolzan"
+
 file:
-  # Certifique-se que esta pasta existe e o Java tem permissão de escrita
-  upload-dir: /Wanderlei/rest-with-spring-and-java-wanderlei/uploads
+  # Caminho absoluto para Windows
+  upload-dir: C:/Wanderlei/rest-with-spring-and-java-wanderlei/uploads
+
 spring:
   application:
     name: rest-with-spring-boot-and-java-wanderlei
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/rest_with_spring_boot_wanderlei?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
     username: wjb
     password: "Nazlob4991@"
+
   jpa:
     hibernate:
-      ddl-auto: update
+      # 'none' evita que o Hibernate tente criar tabelas antes do Flyway
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
+
   servlet:
     multipart:
       enabled: true
       file-size-threshold: 2KB
       max-file-size: 200MB
       max-request-size: 215MB
+
   flyway:
     enabled: true
-    repair-on-migrate: true
+    # Resolve o erro de "non-empty schema" e checksum mismatch após o 'repair'
     baseline-on-migrate: true
+    baseline-version: 0
+    repair-on-migrate: true
     locations: classpath:db/migration
+
 springdoc:
   packages-to-scan: br.com.wanderlei
   paths-to-match: /api/**/v1/**
   swagger-ui:
     use-root-path: true
+
 logging:
   level:
     root: INFO

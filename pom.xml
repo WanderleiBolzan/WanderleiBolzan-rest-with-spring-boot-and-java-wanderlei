@@ -21,6 +21,8 @@
 		<commons-csv.version>1.10.0</commons-csv.version>
 		<commons-io.version>2.16.0</commons-io.version>
 		<jasperreports.verion>7.0.1</jasperreports.verion>
+		<zxing.version>3.5.3</zxing.version>
+
 	</properties>
 
 	<dependencies>
@@ -97,7 +99,17 @@
 			<scope>compile</scope>
 		</dependency>
 
-		<!-- Source: https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports-fonts -->
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>${zxing.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>${zxing.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports-fonts</artifactId>
