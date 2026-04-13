@@ -2,13 +2,13 @@ server:
   port: 8082
 
 cors:
-  # Mantido como String única para compatibilidade com @Value("${cors.originPatterns}")
   originPatterns: "http://localhost:8082,http://localhost:3000,https://github.com/WanderleiBolzan"
 
 file:
-  # Caminho absoluto para Windows
   upload-dir: C:/Wanderlei/rest-with-spring-and-java-wanderlei/uploads
-
+email:
+  subject: "Default Subject"
+  message: "Default Message"
 spring:
   application:
     name: rest-with-spring-boot-and-java-wanderlei
@@ -21,14 +21,21 @@ spring:
 
   jpa:
     hibernate:
-      # 'none' evita que o Hibernate tente criar tabelas antes do Flyway
       ddl-auto: none
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
-
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enabled: true
+      mail.smtp.starttls.required: true
   servlet:
     multipart:
       enabled: true
