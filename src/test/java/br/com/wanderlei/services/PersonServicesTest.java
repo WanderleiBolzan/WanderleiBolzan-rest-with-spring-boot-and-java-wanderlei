@@ -44,7 +44,7 @@ class PersonServicesTest {
     }
 
     @Test
-    void findById() {
+    void findById() throws Exception {
 
         Person person = input.mockEntity(1);
         person.setId(1L);
@@ -97,7 +97,7 @@ class PersonServicesTest {
     }
 
     @Test
-    void create() {
+    void create() throws Exception {
         Person person = input.mockEntity(1);
         Person persisted = person;
 
@@ -166,7 +166,7 @@ class PersonServicesTest {
     }
 
     @Test
-    void update() {
+    void update() throws Exception {
         Person person = input.mockEntity(1);
         Person persisted = person;
 

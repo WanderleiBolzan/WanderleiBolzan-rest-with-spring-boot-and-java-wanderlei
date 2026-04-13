@@ -2,7 +2,7 @@ package br.com.wanderlei.file.exporter.impl;
 
 
 import br.com.wanderlei.data.dto.PersonDTO;
-import br.com.wanderlei.file.exporter.contract.FileExporter;
+import br.com.wanderlei.file.exporter.contract.PersonExporter;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ByteArrayResource;
@@ -14,10 +14,10 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 @Service ("xlsxExporter")
 @Component
-public class XlsxExporter implements FileExporter {
+public class XlsxExporter implements PersonExporter {
 
     @Override
-    public Resource exportFile(List<PersonDTO> people) throws Exception {
+    public Resource exportPeople(List<PersonDTO> people) throws Exception {
         try (Workbook workbook = new XSSFWorkbook()){
             Sheet sheet = workbook.createSheet("People");
 
@@ -32,7 +32,7 @@ public class XlsxExporter implements FileExporter {
             int rowIndex = 1;
             for (PersonDTO person : people) {
                 Row row = sheet.createRow(rowIndex++);
-                row.createCell(0).setCellValue(person.getId().toString ());
+                row.createCell(0).setCellValue(person.getId());
                 row.createCell(1).setCellValue(person.getFirstName());
                 row.createCell(2).setCellValue(person.getLastName());
                 row.createCell(3).setCellValue(person.getAddress());
@@ -48,7 +48,7 @@ public class XlsxExporter implements FileExporter {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             workbook.write(outputStream);
 
-            return new ByteArrayResource (outputStream.toByteArray());
+            return new ByteArrayResource(outputStream.toByteArray());
         }
     }
 
@@ -59,5 +59,10 @@ public class XlsxExporter implements FileExporter {
         style.setFont(font);
         style.setAlignment(HorizontalAlignment.CENTER);
         return style;
+    }
+
+    @Override
+    public Resource exportPerson(PersonDTO person) throws Exception {
+        return null;
     }
 }

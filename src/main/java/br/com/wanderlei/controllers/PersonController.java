@@ -66,11 +66,13 @@ public class PersonController implements PersonControllerDocs {
 
         Map<String, String> extensionMap = Map.of(
                 MediaTypes.APPLICATION_XLSX_VALUE, ".xlsx",
-                MediaTypes.APPLICATION_XLSX_VALUE, ".csv",
-                MediaTypes.APPLICATION_XLSX_VALUE, ".pdf"
+                MediaTypes.APPLICATION_CSV_VALUE, ".csv",
+                MediaTypes.APPLICATION_PDF_VALUE, ".pdf"
         );
-        var fileExtension = extensionMap.getOrDefault (acceptHeader, "");
+
+        var fileExtension = extensionMap.getOrDefault(acceptHeader, "");
         var contentType = acceptHeader != null ? acceptHeader : "application/octet-stream";
+
         var filename = "people_exported" + fileExtension;
 
         return ResponseEntity.ok()
@@ -107,6 +109,24 @@ public class PersonController implements PersonControllerDocs {
     @Override
     public PersonDTO findById(@PathVariable("id") Long id) throws Exception {
         return service.findById(id);
+    }
+
+    @GetMapping(value = "/export/{id}",
+            produces = {
+                    MediaType.APPLICATION_PDF_VALUE}
+    )
+    @Override
+    public ResponseEntity<Resource> export(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
+
+        String acceptHeader = request.getHeader(HttpHeaders.ACCEPT);
+        Resource file = service.exportPerson(id, acceptHeader);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(acceptHeader))
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=person.pdf")
+                .body(file);
     }
 
     // @CrossOrigin(origins = {"http://localhost:8080","https://www.erudio.com.br"})
