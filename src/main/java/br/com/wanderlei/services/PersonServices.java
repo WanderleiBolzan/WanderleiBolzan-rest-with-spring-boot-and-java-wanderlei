@@ -1,14 +1,11 @@
 package br.com.wanderlei.services;
 
-import br.com.wanderlei.controllers.PersonController;
+import br.com.wanderlei.controllers.docs.PersonControllerDocs;
 import br.com.wanderlei.data.dto.PersonDTO;
 import br.com.wanderlei.exception.BadRequestException;
 import br.com.wanderlei.exception.FileStorageException;
 import br.com.wanderlei.exception.RequiredObjectIsNullException;
 import br.com.wanderlei.exception.ResourceNotFoundException;
-
-import static br.com.wanderlei.mapper.ObjectMapper.parseObject;
-
 import br.com.wanderlei.file.exporter.contract.PersonExporter;
 import br.com.wanderlei.file.exporter.factory.FileExporterFactory;
 import br.com.wanderlei.file.importer.contract.FileImporter;
@@ -19,9 +16,6 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +30,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
+
+import static br.com.wanderlei.mapper.ObjectMapper.parseObject;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class PersonServices {
@@ -208,7 +206,7 @@ public class PersonServices {
         });
 
         Link findAllLink = WebMvcLinkBuilder.linkTo(
-                        WebMvcLinkBuilder.methodOn(PersonController.class)
+                        WebMvcLinkBuilder.methodOn(PersonControllerDocs.class)
                                 .findAll(
                                         pageable.getPageNumber(),
                                         pageable.getPageSize(),
@@ -218,16 +216,16 @@ public class PersonServices {
     }
 
     private void addHateoasLinks(PersonDTO dto) throws Exception {
-        dto.add(linkTo(methodOn(PersonController.class).findAll(1, 12, "asc")).withRel("findAll").withType("GET"));
-        dto.add(linkTo(methodOn(PersonController.class).findByName("", 1, 12, "asc")).withRel("findByName").withType("GET"));
-        dto.add(linkTo(methodOn(PersonController.class).findById(dto.getId())).withSelfRel().withType("GET"));
-        dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
-        dto.add(linkTo(methodOn(PersonController.class)).slash("massCreation").withRel("massCreation").withType("POST"));
-        dto.add(linkTo(methodOn(PersonController.class).update(dto)).withRel("update").withType("PUT"));
-        dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
-        dto.add(linkTo(methodOn(PersonController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));
+        dto.add(linkTo(methodOn(PersonControllerDocs.class).findAll(1, 12, "asc")).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(PersonControllerDocs.class).findByName("", 1, 12, "asc")).withRel("findByName").withType("GET"));
+        dto.add(linkTo(methodOn(PersonControllerDocs.class).findById(dto.getId())).withSelfRel().withType("GET"));
+        dto.add(linkTo(methodOn(PersonControllerDocs.class).create(dto)).withRel("create").withType("POST"));
+        dto.add(linkTo(methodOn(PersonControllerDocs.class)).slash("massCreation").withRel("massCreation").withType("POST"));
+        dto.add(linkTo(methodOn(PersonControllerDocs.class).update(dto)).withRel("update").withType("PUT"));
+        dto.add(linkTo(methodOn(PersonControllerDocs.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
+        dto.add(linkTo(methodOn(PersonControllerDocs.class).delete(dto.getId())).withRel("delete").withType("DELETE"));
 
-        dto.add(linkTo(methodOn(PersonController.class)
+        dto.add(linkTo(methodOn(PersonControllerDocs.class)
                 .exportPage(
                         1, 12, "asc", null))
                 .withRel("exportPage")

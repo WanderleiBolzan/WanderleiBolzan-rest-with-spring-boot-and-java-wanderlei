@@ -13,9 +13,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -135,7 +133,7 @@ public interface PersonControllerDocs {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    PersonDTO findById(@PathVariable("id") Long id) throws Exception;
+    PersonDTO findById(@PathVariable("id") Long id);
 
     @Operation(summary = "Export Person data as PDF",
             description = "Export a specific Person data as PDF by your ID",
@@ -153,7 +151,7 @@ public interface PersonControllerDocs {
             }
     )
     ResponseEntity<Resource> export(@PathVariable("id") Long id,
-                                    HttpServletRequest request) throws Exception;
+                                    HttpServletRequest request);
 
     @Operation(summary = "Adds a new Person",
             description = "Adds a new person by passing in a JSON, XML or YML representation of the person.",
@@ -169,7 +167,7 @@ public interface PersonControllerDocs {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    PersonDTO create(@RequestBody PersonDTO person) throws Exception;
+    PersonDTO create(@RequestBody PersonDTO person);
 
     @Operation(summary = "Updates a person's information",
             description = "Updates a person's information by passing in a JSON, XML or YML representation of the updated person.",
@@ -187,7 +185,7 @@ public interface PersonControllerDocs {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    PersonDTO update(@RequestBody PersonDTO person) throws Exception;
+    PersonDTO update(@RequestBody PersonDTO person);
 
     @Operation(summary = "Disable a Person",
             description = "Disable a specific person by your ID",
@@ -205,7 +203,7 @@ public interface PersonControllerDocs {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    PersonDTO disablePerson(@PathVariable("id") Long id) throws Exception;
+    PersonDTO disablePerson(@PathVariable("id") Long id);
 
     @Operation(summary = "Deletes a Person",
             description = "Deletes a specific person by their ID",
